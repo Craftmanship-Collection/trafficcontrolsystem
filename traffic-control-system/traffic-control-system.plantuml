@@ -1,0 +1,123 @@
+@startuml Traffic Control System
+
+package models {
+
+    class Junction {
+
+        - signals: Signal
+        - signalChangingStrategy: SignalChangingStrategy
+
+        + addSignal(signal: Signal)
+        + removeSignal(signal: Signal)
+        + start()
+        + setSignalChangingStrategy(signalChangingStrategy: SignalChangingStrategy)
+    }
+
+    class Signal {
+
+        - name : String
+        - signalState : SignalState
+
+        + getSignalState(): SignalState
+        + setSignalState(signalState: SignalState)
+        + changeSignal(singalState: SignalState)
+        + getName() : String
+    }
+}
+
+package states {
+
+    package interfaces {
+        interface SignalState {
+
+            {abstract} setSignal(signal : Signal)
+            {abstract} changeSignal()
+
+        }
+    }
+    package concretes {
+
+        class GreenSignalState {
+
+            - signal : Signal
+
+        }
+
+        class RedSignalState {
+
+            - signal : Signal
+
+        }
+
+        class YellowSignalState {
+
+            - signal : Signal
+
+        }
+
+    }
+
+    SignalState <|... YellowSignalState
+    SignalState <|... GreenSignalState
+    SignalState <|... RedSignalState
+}
+
+package interfaces {
+
+    interface SignalChangingStrategy {
+
+        {abstract} start(singals: Signal)
+
+    }
+
+    class AutomaticSignalChangingStrategy implements SignalChangingStrategy {
+
+        - red : RedSignalState
+        - yellow : YellowSignalState
+        - green : GreenSignalState
+
+    }
+
+    class ManualSignalChangingStrategy implements SignalChangingStrategy {
+
+        - signalSelector : SignalSelector
+        - signalStateSelector: SignalStateSelector
+
+    }
+}
+
+package utils {
+
+    interface SignalSelector {
+
+        {abstract} signalSelect(): Signal
+        {abstract} setSignals(signals: Signal)
+
+    }
+
+    class ConsoleSignalSelector implements SignalSelector {
+        - signals: Signal
+    }
+
+    interface SignalStateSelector {
+        {abstract} selectSignalState() : SignalState
+    }
+
+    class ConsoleSignalStateSelector implements SignalStateSelector {
+
+    }
+
+    SignalStateSelector --- SignalState
+}
+
+Junction *--- Signal
+Junction *--- SignalChangingStrategy
+RedSignalState --- Signal
+YellowSignalState --- Signal
+GreenSignalState --- Signal
+ManualSignalChangingStrategy --- SignalSelector
+ManualSignalChangingStrategy --- SignalStateSelector
+ConsoleSignalSelector "1" --- "n" Signal
+SignalChangingStrategy "1" --- "n" Signal
+
+@enduml
