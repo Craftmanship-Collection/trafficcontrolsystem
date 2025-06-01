@@ -1,3 +1,6 @@
+# Traffic Control System
+
+## Requriements
 1. System should handle signals like RED,YELLOW and GREEN
 2. It should be periodically change the signal for particular time interval
 3. System should identify on which side traffic is more and change the signal accordingly
@@ -14,9 +17,5 @@
 14. The system should be able to detect and classify vehicles (cars, buses, bikes, trucks) to better manage lane allocation and prioritize larger or public transport vehicles.
 15. The system should dynamically adjust signal timing not only based on preset intervals but also on live traffic data from sensors or cameras.
 
-
-
-
-
-Class Diagram
+## Class Diagram
 ![img.png](img.png)
